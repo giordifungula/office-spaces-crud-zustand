@@ -3,11 +3,11 @@ import { IOfficeCreate, IOfficeRead } from './Types';
 
 type Store = {
 	offices: IOfficeRead[];
-	newOffice: IOfficeCreate;
-	setNewOffice: (newOffice: IOfficeCreate) => void;
+	newOffice: IOfficeRead;
+	setNewOffice: (newOffice: IOfficeRead) => void;
 	addOffice: () => void;
-	removeOffice: (id: number) => void;
-	editOffice: (id: number) => void;
+	removeOffice: (id: string) => void;
+	editOffice: (id: string) => void;
 	setOffices: (offices: IOfficeRead[]) => void;
 	// TODO: add staffs
 };
@@ -22,7 +22,7 @@ const useStore = create<Store>((set) => ({
 		capacity: 0,
 		officeColor: '',
 	},
-	setNewOffice: (newOffice: IOfficeCreate) => {
+	setNewOffice: (newOffice: IOfficeRead) => {
 		set((state) => ({ ...state, newOffice }));
 	},
 	addOffice: () => {
@@ -31,13 +31,13 @@ const useStore = create<Store>((set) => ({
 			offices: [...state.offices, state.newOffice],
 		}));
 	},
-	removeOffice: (id: number) => {
+	removeOffice: (id: string) => {
 		set((state) => ({
 			...state,
 			offices: state.offices.filter((office) => office.id !== id),
 		}));
 	},
-	editOffice: (id: number) => {
+	editOffice: (id: string) => {
 		set((state) => ({
 			...state,
 			offices: state.offices.map((office) => {

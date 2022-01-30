@@ -8,7 +8,7 @@ export interface IOfficeCreate {
 }
 
 export interface IOfficeRead extends IOfficeCreate {
-	id?: number;
+	id?: string; // UUID
 }
 
 export interface IStaffRead extends IStaffCreate {

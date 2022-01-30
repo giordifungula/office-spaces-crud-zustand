@@ -1,5 +1,6 @@
 import React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { v4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 // @form
 import { useForm, Controller } from 'react-hook-form';
@@ -42,7 +43,9 @@ const AddOfice = ({ heading }: IAddOfficeProps) => {
 	const classes = useStyles({});
 	const navigate = useNavigate();
 	const store = useStore((state) => state);
-	console.log('store', store);
+
+	const { setNewOffice, offices, addOffice } = store;
+	console.log('offices', offices);
 
 	const [selectedColor, setSelectedColor] = React.useState<string | null>(
 		null,
@@ -56,11 +59,20 @@ const AddOfice = ({ heading }: IAddOfficeProps) => {
 		resolver: yupResolver(schema),
 	});
 
-	const addOffice = async (data: IAddOfficeInputs) => {
+	const addOfficeForm = async (data: IAddOfficeInputs) => {
+		if (selectedColor) {
+			setNewOffice({ ...data, officeColor: selectedColor, id: v4() });
+			addOffice();
+			toast.success('Office has been added');
+			goBack();
+		} else {
+			toast.error('Please select a color');
+		}
+
+		console.log('offices inside', offices);
 		// if (selectedColor) {
 		// 	await DB.offices.add({ ...data, officeColor: selectedColor });
-		// 	toast.success('Office has been added');
-		// 	goBack();
+
 		// } else {
 		// 	toast.error('Please select a color');
 		// }
@@ -72,7 +84,7 @@ const AddOfice = ({ heading }: IAddOfficeProps) => {
 
 	return (
 		<Grid container>
-			<form onSubmit={handleSubmit(addOffice)}>
+			<form onSubmit={handleSubmit(addOfficeForm)}>
 				<Grid item>
 					<Toaster />
 					<ManageOfficeView heading={heading} goBack={goBack}>
