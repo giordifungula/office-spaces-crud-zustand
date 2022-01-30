@@ -57,6 +57,7 @@ const ViewOffice = ({ heading }: IOfficePageProps) => {
 			officeId: 1,
 		},
 	];
+	// TODO: get staffs from store
 
 	const location = useLocation();
 	const locationIncludesAddStaff = location.pathname.includes('add-staff');
@@ -64,6 +65,7 @@ const ViewOffice = ({ heading }: IOfficePageProps) => {
 	const [openAddStaff, setOpenAddStaff] = React.useState(false);
 
 	const store = useStore((state) => state);
+	const { offices } = store;
 
 	React.useEffect(() => {
 		if (locationIncludesAddStaff) {
@@ -101,18 +103,20 @@ const ViewOffice = ({ heading }: IOfficePageProps) => {
 		setExpanded(!expanded);
 	};
 
-	const findOfficeById = async (id: number) => {
-		// const office = await DB.offices.get({ id });
+	const findOfficeById = async (id: string) => {
+		const office = offices.find((office) => office.id === id);
 
 		office ? setFindOffice(office) : null;
 	};
+
+	console.log('office page', office);
 
 	const goToEditOffice = () => {
 		navigate(`/edit-office/${officeId}`);
 	};
 
 	React.useEffect(() => {
-		findOfficeById(Number(officeId));
+		findOfficeById(officeId);
 	}, [officeId]);
 
 	const goBack = () => {
